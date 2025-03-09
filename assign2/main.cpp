@@ -14,7 +14,7 @@
 #include <string>
 #include <unordered_set>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "DENG HAODONG"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -28,7 +28,16 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
+    std::set<std::string> applicants;
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        std::string line;
+        while (std::getline(file, line)) {
+            applicants.insert(line);
+        }
+        file.close();
+    }
+    return applicants;
 }
 
 /**
@@ -40,7 +49,14 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+    std::queue<const std::string*> matches;
+    char firstInitial = name[0];
+    for (const auto& student : students) {
+        if (!student.empty() && student[0] == firstInitial) {
+            matches.push(&student);
+        }
+    }
+    return matches;
 }
 
 /**
@@ -54,7 +70,18 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  *                Will return "NO MATCHES FOUND." if `matches` is empty.
  */
 std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
+    if (matches.empty()) {
+        return "NO MATCHES FOUND.";
+    }
+    // 简单示例：随机选择一个匹配项
+    int randomIndex = rand() % matches.size();
+    for (int i = 0; i < randomIndex; ++i) {
+        matches.push(matches.front());
+        matches.pop();
+    }
+    const std::string* match = matches.front();
+    matches.pop();
+    return *match;
 }
 
 /* #### Please don't remove this line! #### */
